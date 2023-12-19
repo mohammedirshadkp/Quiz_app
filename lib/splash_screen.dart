@@ -20,9 +20,9 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
 
   var d;
   getData() async {
-    d = await ref.read(getDataprovider.future);
+    d = await ref.read(getDataProvider.future);
     await ref.read(quizControllerProvider.notifier).saveDataLocally(d);
-    questionsFromHive = await ref.read(getDataFromHiveprovider.future);
+    questionsFromHive = await ref.read(getDataFromHiveProvider.future);
   }
 
   @override

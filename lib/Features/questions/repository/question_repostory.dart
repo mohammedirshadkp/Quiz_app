@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
-
 import '../../../Core/faliure.dart';
 import '../../../Core/type_def.dart';
 

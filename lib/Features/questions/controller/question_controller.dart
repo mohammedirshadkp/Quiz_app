@@ -2,9 +2,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../repository/question_repostory.dart';
 
-final getDataprovider = FutureProvider(
+final getDataProvider = FutureProvider(
     (ref) => ref.read(quizControllerProvider.notifier).fetchData());
-final getDataFromHiveprovider = FutureProvider(
+final getDataFromHiveProvider = FutureProvider(
     (ref) => ref.read(quizControllerProvider.notifier).getDataFromHive());
 final quizControllerProvider =
     StateNotifierProvider<QuizController, AsyncValue<List<dynamic>>>(
@@ -17,18 +17,17 @@ final quizControllerProvider =
 class QuizController extends StateNotifier<AsyncValue<List<dynamic>>> {
   final QuizRepository _repository;
 
-  QuizController(this._repository) : super(AsyncValue.loading());
+  QuizController(this._repository) : super(const AsyncValue.loading());
 
   Future<List<dynamic>> fetchData() async {
     final result = await _repository.fetchData();
 
     return result.fold(
       (failure) {
-        // You need to return a value here even if it's null or an empty list
-        return <dynamic>[]; // Return an empty list as a default value
+        return <dynamic>[];
       },
       (quizData) {
-        return quizData; // Return the fetched data
+        return quizData;
       },
     );
   }
@@ -36,8 +35,7 @@ class QuizController extends StateNotifier<AsyncValue<List<dynamic>>> {
   Future<void> saveDataLocally(List<dynamic> data) async {
     try {
       await _repository.saveDataLocally(data);
-      // You can update the state or perform any other actions after saving data locally
-    } catch (e, stackTrace) {}
+    } catch (e) {}
   }
 
   Future<List<dynamic>> getDataFromHive() async {
