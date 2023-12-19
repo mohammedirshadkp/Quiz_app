@@ -46,7 +46,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             ),
             Image.asset(
               Constants.quixtime2,
-              width: deviceWidth * 0.7,
+              width: deviceWidth * 0.8,
             ),
             InkWell(
               onTap: () async {
@@ -78,9 +78,17 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               ),
             ),
             SizedBox(height: deviceHeight * 0.03),
-            const Text(
-              'Powered by www.artifitia.com',
-              style: TextStyle(color: Colors.grey),
+            const Column(
+              children: [
+                Text(
+                  'Powered by ',
+                  style: TextStyle(color: Colors.grey, fontSize: 10),
+                ),
+                Text(
+                  'www.artifitia.com',
+                  style: TextStyle(color: Colors.grey, fontSize: 15),
+                ),
+              ],
             ),
           ],
         ),
