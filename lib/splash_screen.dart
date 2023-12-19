@@ -51,7 +51,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             InkWell(
               onTap: () async {
                 if (questionsFromHive.isNotEmpty) {
-                  Navigator.push(
+                  Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
                       builder: (context) => QuizScreen(
