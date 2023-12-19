@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/Core/global_variables.dart';
 import 'package:quiz_app/Core/pallete.dart';
@@ -9,32 +8,27 @@ import 'Features/questions/screen/QuestionScreen.dart';
 import 'Core/constants.dart';
 
 class SplashScreen extends ConsumerStatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
 class _SplashScreenState extends ConsumerState<SplashScreen> {
-  List questionsFromdb = [];
-  List questionsFromhive = [];
+  List questionsFromDb = [];
+  List questionsFromHive = [];
 
   var d;
   getData() async {
     d = await ref.read(getDataprovider.future);
     await ref.read(quizControllerProvider.notifier).saveDataLocally(d);
-    questionsFromhive = await ref.read(getDataFromHiveprovider.future);
+    questionsFromHive = await ref.read(getDataFromHiveprovider.future);
   }
 
   @override
   Future<void> didChangeDependencies() async {
-    // TODO: implement didChangeDependencies
     await getData();
     super.didChangeDependencies();
-  }
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
   }
 
   @override
@@ -50,24 +44,23 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             SizedBox(
               height: deviceHeight * 0.2,
             ),
-            // Your logo asset image
             Image.asset(
               Constants.quixtime2,
               width: deviceWidth * 0.7,
             ),
             InkWell(
               onTap: () async {
-                if (questionsFromhive.isNotEmpty) {
+                if (questionsFromHive.isNotEmpty) {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => QuizScreen(
-                        data: questionsFromhive,
+                        data: questionsFromHive,
                       ),
                     ),
                   );
                 } else {
-                  const CircularProgressIndicator();
+                  showSnackBar(context, 'Loading...');
                 }
               },
               child: Container(

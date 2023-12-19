@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:quiz_app/Core/global_variables.dart';
 import 'package:quiz_app/Core/pallete.dart';
 import 'package:quiz_app/Features/result/screen/result.dart';
+import 'dart:math' as math;
 
 class QuizScreen extends StatefulWidget {
   final List data;
@@ -23,18 +24,28 @@ class _QuizScreenState extends State<QuizScreen> {
   int _correctAnswers = 0;
   void startTimer() {
     const oneSec = Duration(seconds: 1);
-    _timer?.cancel(); // Cancel the previous timer if it exists
-
     _timer = Timer.periodic(oneSec, (timer) {
       if (_time == 0) {
         timer.cancel();
         setState(() {
           if (_currentQuestionIndex < widget.data.length - 1) {
+            if (_selectedAnswerIndex != null) {
+              // Check if an answer was chosen before moving to the next question
+              bool isCorrect = widget.data[_currentQuestionIndex]["options"]
+                  [_selectedAnswerIndex!]["isCorrect"];
+              _correctAnswers += isCorrect ? 1 : 0;
+            }
             _currentQuestionIndex++; // Move to the next question index
             _time = 40; // Reset timer for the next question
+            _selectedAnswerIndex = null; // Reset selected answer index
+            _answerChosen = false; // Reset answer chosen flag
             startTimer(); // Start the timer for the new question
           } else {
-            // Navigate to the result page when all questions are answered
+            if (_selectedAnswerIndex != null) {
+              bool isCorrect = widget.data[_currentQuestionIndex]["options"]
+                  [_selectedAnswerIndex!]["isCorrect"];
+              _correctAnswers += isCorrect ? 1 : 0;
+            }
             Navigator.push(
               context,
               MaterialPageRoute(
@@ -89,20 +100,24 @@ class _QuizScreenState extends State<QuizScreen> {
                 height: deviceHeight * 0.05,
               ),
               Stack(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.centerRight,
                 children: [
                   SizedBox(
-                    height: deviceHeight * 0.035,
+                    height: deviceHeight * 0.027,
                     width: deviceWidth * 0.78,
-                    child: LinearProgressIndicator(
-                      borderRadius: BorderRadius.circular(15),
-                      value: _time / 40, // Change 40 to the total quiz time
-                      backgroundColor: const Color.fromRGBO(108, 38, 119, 1),
-                      valueColor: AlwaysStoppedAnimation<Color>(progressColor),
+                    child: Transform.rotate(
+                      angle: -math.pi,
+                      child: LinearProgressIndicator(
+                        borderRadius: BorderRadius.circular(15),
+                        value: 1 - (_time / 40), // Adjust the value here
+                        backgroundColor: const Color.fromRGBO(108, 38, 119, 1),
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(progressColor),
+                      ),
                     ),
                   ),
                   Positioned(
-                    right: 0,
+                    left: 0, // Position the timer on the left
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Text(
@@ -122,17 +137,19 @@ class _QuizScreenState extends State<QuizScreen> {
                 width: deviceWidth * 0.7,
                 height: deviceHeight * 0.1,
                 child: currentQuestion != null
-                    ? Text(
-                        currentQuestion["question"],
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Pallete.secondaryColor,
+                    ? Center(
+                        child: Text(
+                          currentQuestion["question"],
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Pallete.secondaryColor,
+                          ),
                         ),
                       )
-                    : Text('No question available'),
+                    : const Text('No question available'),
               ),
-              SizedBox(height: deviceHeight * 0.05),
+              SizedBox(height: deviceHeight * 0.03),
               SizedBox(
                 height: deviceHeight * 0.5,
                 width: deviceWidth * 0.75,
@@ -154,6 +171,8 @@ class _QuizScreenState extends State<QuizScreen> {
                             .transparent; // Default color when no answer is chosen
 
                     return InkWell(
+                      highlightColor: Colors.transparent,
+                      splashColor: Colors.transparent,
                       onTap: _answerChosen
                           ? null
                           : () {
@@ -172,9 +191,12 @@ class _QuizScreenState extends State<QuizScreen> {
                             color: optionColor,
                             border: Border.all(color: Colors.white),
                           ),
-                          child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(
+                                left: deviceWidth * 0.1,
+                                top: deviceHeight * 0.02),
                             child: Text(
-                              currentOptions[index]["text"],
+                              "${index + 1}.${currentOptions[index]["text"]}",
                               style: const TextStyle(
                                 color: Pallete.secondaryColor,
                               ),
@@ -197,8 +219,6 @@ class _QuizScreenState extends State<QuizScreen> {
                       if (currentOptions[_selectedAnswerIndex!]['isCorrect']) {
                         _correctAnswers++; // Increment correct answers count
                       }
-
-                      // Move to the next question if an answer is selected
                       if (_currentQuestionIndex < widget.data.length - 1) {
                         _currentQuestionIndex++;
                         _selectedAnswerIndex = null; // Reset selected answer
