@@ -1,11 +1,9 @@
-import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/Core/global_variables.dart';
 import 'package:quiz_app/Core/pallete.dart';
-
+import 'package:quiz_app/Core/utiles.dart';
 import 'Features/questions/controller/question_controller.dart';
 import 'Features/questions/screen/QuestionScreen.dart';
 import 'Core/constants.dart';
@@ -18,6 +16,7 @@ class SplashScreen extends ConsumerStatefulWidget {
 class _SplashScreenState extends ConsumerState<SplashScreen> {
   List questionsFromdb = [];
   List questionsFromhive = [];
+
   var d;
   getData() async {
     d = await ref.read(getDataprovider.future);
@@ -56,23 +55,28 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
               Constants.quixtime2,
               width: deviceWidth * 0.7,
             ),
-            // SizedBox(height: deviceHeight * 0.0),
             InkWell(
               onTap: () async {
-                Navigator.push(
+                if (questionsFromhive.isNotEmpty) {
+                  Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) => QuizScreen(
                         data: questionsFromhive,
                       ),
-                    ));
+                    ),
+                  );
+                } else {
+                  const CircularProgressIndicator();
+                }
               },
               child: Container(
                 height: deviceHeight * 0.07,
                 width: deviceWidth * 0.4,
                 decoration: BoxDecoration(
-                    color: const Color.fromRGBO(133, 20, 225, 1),
-                    borderRadius: BorderRadius.circular(deviceWidth * 0.03)),
+                  color: const Color.fromRGBO(133, 20, 225, 1),
+                  borderRadius: BorderRadius.circular(deviceWidth * 0.03),
+                ),
                 child: const Center(
                     child: Text(
                   'Start Quiz',

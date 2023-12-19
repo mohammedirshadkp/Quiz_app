@@ -23,14 +23,16 @@ class _QuizScreenState extends State<QuizScreen> {
   int _correctAnswers = 0;
   void startTimer() {
     const oneSec = Duration(seconds: 1);
+    _timer?.cancel(); // Cancel the previous timer if it exists
+
     _timer = Timer.periodic(oneSec, (timer) {
       if (_time == 0) {
         timer.cancel();
-        // Timer completed, perform actions or move to the next question
         setState(() {
           if (_currentQuestionIndex < widget.data.length - 1) {
             _currentQuestionIndex++; // Move to the next question index
             _time = 40; // Reset timer for the next question
+            startTimer(); // Start the timer for the new question
           } else {
             // Navigate to the result page when all questions are answered
             Navigator.push(
@@ -66,12 +68,16 @@ class _QuizScreenState extends State<QuizScreen> {
 
   @override
   Widget build(BuildContext context) {
+    deviceHeight = MediaQuery.of(context).size.height;
+    deviceWidth = MediaQuery.of(context).size.width;
     Map<dynamic, dynamic> currentQuestion = widget.data[_currentQuestionIndex];
     List<dynamic> currentOptions = currentQuestion["options"];
-
+    if (widget.data.isNotEmpty && _currentQuestionIndex < widget.data.length) {
+      currentQuestion = widget.data[_currentQuestionIndex];
+      currentOptions = currentQuestion["options"];
+    }
     Color progressColor =
         _time <= 10 ? Colors.red : const Color.fromRGBO(195, 83, 214, 1);
-
     return SafeArea(
       child: Scaffold(
         backgroundColor: Pallete.primaryColor,
@@ -115,14 +121,16 @@ class _QuizScreenState extends State<QuizScreen> {
               SizedBox(
                 width: deviceWidth * 0.7,
                 height: deviceHeight * 0.1,
-                child: Text(
-                  currentQuestion["question"],
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: Pallete.secondaryColor,
-                  ),
-                ),
+                child: currentQuestion != null
+                    ? Text(
+                        currentQuestion["question"],
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Pallete.secondaryColor,
+                        ),
+                      )
+                    : Text('No question available'),
               ),
               SizedBox(height: deviceHeight * 0.05),
               SizedBox(
@@ -135,7 +143,6 @@ class _QuizScreenState extends State<QuizScreen> {
                     bool isSelected = _selectedAnswerIndex != null &&
                         _selectedAnswerIndex == index;
                     bool isWrongSelected = isSelected && !isCorrect;
-
                     // Update the selected answer and correct answer color conditionally
                     Color optionColor = _answerChosen
                         ? isCorrect
