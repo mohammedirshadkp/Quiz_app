@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:quiz_app/Core/constants.dart';
 import 'package:quiz_app/Core/pallete.dart';
 import 'package:quiz_app/splash_screen.dart';
-
 import '../../../Core/global_variables.dart';
 
 class QuizResultPage extends StatefulWidget {
