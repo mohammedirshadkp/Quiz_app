@@ -1,4 +1,4 @@
-# Quiz App
+# Quiz App with api integration for machine test
 
 This is a Flutter quiz application that allows users to take quizzes with timed questions and receive results at the end.
 
