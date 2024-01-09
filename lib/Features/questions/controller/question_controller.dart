@@ -16,12 +16,9 @@ final quizControllerProvider =
 
 class QuizController extends StateNotifier<AsyncValue<List<dynamic>>> {
   final QuizRepository _repository;
-
   QuizController(this._repository) : super(const AsyncValue.loading());
-
   Future<List<dynamic>> fetchData() async {
     final result = await _repository.fetchData();
-
     return result.fold(
       (failure) {
         return <dynamic>[];
@@ -33,9 +30,7 @@ class QuizController extends StateNotifier<AsyncValue<List<dynamic>>> {
   }
 
   Future<void> saveDataLocally(List<dynamic> data) async {
-    try {
       await _repository.saveDataLocally(data);
-    } catch (e) {}
   }
 
   Future<List<dynamic>> getDataFromHive() async {
