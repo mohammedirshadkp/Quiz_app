@@ -103,7 +103,8 @@ class _QuizResultPageState extends State<QuizResultPage> {
               Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const SplashScreen()));
+                    builder: (context) => const SplashScreen(),
+                  ));
             },
             child: Container(
               height: deviceHeight * 0.06,
