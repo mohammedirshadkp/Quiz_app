@@ -101,11 +101,10 @@ class _QuizResultPageState extends State<QuizResultPage> {
           InkWell(
             onTap: () {
               Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SplashScreen(),
-                ),
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SplashScreen(),
+                  ));
             },
             child: Container(
               height: deviceHeight * 0.06,
