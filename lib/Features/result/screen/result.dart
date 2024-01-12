@@ -62,9 +62,8 @@ class _QuizResultPageState extends State<QuizResultPage> {
                     text: TextSpan(
                       children: [
                         TextSpan(
-                          text: 'You attempt ',
-                          style: GoogleFonts.kanit(color: Colors.black),
-                        ),
+                            text: 'You attempt ',
+                            style: GoogleFonts.kanit(color: Colors.black)),
                         TextSpan(
                           text: '${widget.totalQuestions} Questions',
                           style: GoogleFonts.kanit(color: Colors.pink),
