@@ -114,7 +114,7 @@ class _QuizResultPageState extends State<QuizResultPage> {
               ),
               child: Center(
                   child: Text(
-                percentage >= 80 ? 'Back.!' : 'Try Again...!',
+                percentage >= 80 ? 'Back.!' : 'Try Again..!',
                 style: GoogleFonts.kanit(
                     color: Pallete.secondaryColor, fontWeight: FontWeight.bold),
               )),
