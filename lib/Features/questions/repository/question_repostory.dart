@@ -34,7 +34,7 @@ class QuizRepository {
 
   Future<dynamic> getDataFromHive() async {
     try {
-      final box = await Hive.openBox('daaBox');
+      final box = await Hive.openBox('datBox');
       final savedData = box.get('dataKey');
       await box.close();
       return savedData;
