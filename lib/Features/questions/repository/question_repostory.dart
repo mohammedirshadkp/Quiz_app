@@ -35,12 +35,11 @@ class QuizRepository {
   Future<dynamic> getDataFromHive() async {
     try {
       final box = await Hive.openBox('dataBox');
-      final savedData = box.get('daakey');
+      final savedData = box.get('datakey');
       await box.close();
       return savedData;
     } catch (e) {
-      throw Failure(e
-          .toString()); // Throw an exception or handle it based on your requirements
+      throw Failure(e.toString());
     }
   }
 }
