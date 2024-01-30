@@ -26,7 +26,7 @@ class QuizRepository {
   }
 
   Future<void> saveDataLocally(List<dynamic> data) async {
-    final box = await Hive.openBox('databox');
+    final box = await Hive.openBox('datbox');
     await box.put('dataKey', data);
     await box.close();
   }
