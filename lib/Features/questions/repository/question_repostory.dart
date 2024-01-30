@@ -16,8 +16,7 @@ class QuizRepository {
       if (response.statusCode == 200) {
         List<dynamic> question = json.decode(response.body);
 
-        return right(
-            json.decode(response.body)); // Assuming the response is JSON
+        return right(json.decode(response.body));
       } else {
         throw Exception('Failed to load data');
       }

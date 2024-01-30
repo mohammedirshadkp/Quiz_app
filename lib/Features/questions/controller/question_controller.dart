@@ -19,14 +19,7 @@ class QuizController extends StateNotifier<AsyncValue<List<dynamic>>> {
   QuizController(this._repository) : super(const AsyncValue.loading());
   Future<List<dynamic>> fetchData() async {
     final result = await _repository.fetchData();
-    return result.fold(
-      (failure) {
-        return <dynamic>[];
-      },
-      (quizData) {
-        return quizData;
-      },
-    );
+    return result.
   }
 
   Future<void> saveDataLocally(List<dynamic> data) async {
