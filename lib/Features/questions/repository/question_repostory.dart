@@ -14,7 +14,7 @@ class QuizRepository {
       final response = await http.get(
           Uri.parse('https://nice-lime-hippo-wear.cyclic.app/api/v1/quiz'));
       if (response.statusCode == 200) {
-        List<dynamic> question = json.decode(response.body);
+        // List<dynamic> question = json.decode(response.body);
 
         return right(json.decode(response.body));
       } else {
