@@ -18,7 +18,7 @@ class QuizRepository {
 
         return right(json.decode(response.body));
       } else {
-        throw Exception('Faile to lad data');
+        throw Exception('Fail to lad data');
       }
     } catch (e) {
       return left(Failure(e.toString()));
