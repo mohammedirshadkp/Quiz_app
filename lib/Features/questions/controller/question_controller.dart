@@ -1,4 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:fpdart/src/either.dart';
+import 'package:quiz_app/Core/faliure.dart';
 
 import '../repository/question_repostory.dart';
 
@@ -17,13 +19,13 @@ final quizControllerProvider =
 class QuizController extends StateNotifier<AsyncValue<List<dynamic>>> {
   final QuizRepository _repository;
   QuizController(this._repository) : super(const AsyncValue.loading());
-  Future<List<dynamic>> fetchData() async {
+  Future<Either<Failure, List>> fetchData() async {
     final result = await _repository.fetchData();
-    return result.
+    return result;
   }
 
   Future<void> saveDataLocally(List<dynamic> data) async {
-      await _repository.saveDataLocally(data);
+    await _repository.saveDataLocally(data);
   }
 
   Future<List<dynamic>> getDataFromHive() async {
